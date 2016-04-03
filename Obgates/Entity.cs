@@ -17,11 +17,20 @@ namespace Obgates
 
             foreach (Component component in subcomponents)
             {
-                foreach (int connection in component.connections)
+                // Loop through each output
+                foreach (Output output in component.outputs)
                 {
-                    if (component.output == true)
+                    // Set all connected inputs to the same state
+                    foreach (List<int> entityConnection in output.connections)
                     {
-                        subcomponents[connection].input = true;
+                        foreach (int connection in entityConnection)
+                        {
+                            // First int in connection is the component
+                            if (!subcomponents[entityConnection[0]].inputs[connection]) {
+                                // Only change if false
+                                subcomponents[entityConnection[0]].inputs[connection] = output.state;
+                            }
+                        }
                     }
                 }
             }

@@ -8,9 +8,15 @@ namespace Obgates
 {
     class NullGate : Component
     {
+        public NullGate()
+        {
+            inputs.Add(false);
+            outputs.Add(new Output());
+        }
+
         public override void step()
         {
-            output = input;
+            outputs[0].state = inputs[0];
         }
     }
 }

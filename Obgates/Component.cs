@@ -8,11 +8,10 @@ namespace Obgates
 {
     abstract class Component
     {
-        public bool input;
-        public bool output;
+        public List<bool> inputs = new List<bool>();
+        public List<Output> outputs = new List<Output>();
 
         public List<Component> subcomponents = new List<Component>();
-        public List<int> connections = new List<int>();
 
         public abstract void step();
     }

@@ -22,9 +22,12 @@ namespace Obgates
         private void Form1_Load(object sender, EventArgs e)
         {
             NullGate r1 = new NullGate();
-            r1.connections.Add(1);
+            Output o1 = new Output();
+            o1.addConnection(1, 0);
+            r1.outputs.Add(o1);
+
             NullGate r2 = new NullGate();
-            r2.connections.Add(2);
+
             NullGate r3 = new NullGate();
 
             sim = new Entity();   
@@ -35,7 +38,7 @@ namespace Obgates
 
         private void button1_Click(object sender, EventArgs e)
         {
-            sim.subcomponents[0].input = true;
+            sim.subcomponents[0].inputs[0] = true;
             sim.step();
         }
     }
