@@ -21,13 +21,13 @@ namespace Obgates
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Component r1 = new Component();
+            NullGate r1 = new NullGate();
             r1.connections.Add(1);
-            Component r2 = new Component();
+            NullGate r2 = new NullGate();
             r2.connections.Add(2);
-            Component r3 = new Component();
+            NullGate r3 = new NullGate();
 
-            sim = new Component();
+            sim = new Entity();   
             sim.subcomponents.Add(r1);
             sim.subcomponents.Add(r2);
             sim.subcomponents.Add(r3);
