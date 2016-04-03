@@ -10,13 +10,13 @@ namespace Obgates
     {
         public NullGate()
         {
-            inputs.Add(false);
-            outputs.Add(new Output());
+            pinStates.Add(false);
+            pinStates.Add(false);
         }
 
         public override void step()
         {
-            outputs[0].state = inputs[0];
+            pinStates[1] = pinStates[0];
         }
     }
 }

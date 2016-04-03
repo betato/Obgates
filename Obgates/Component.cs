@@ -8,9 +8,14 @@ namespace Obgates
 {
     abstract class Component
     {
-        public List<bool> inputs = new List<bool>();
-        public List<Output> outputs = new List<Output>();
-
+        // Output and input states
+        public List<bool> pinStates = new List<bool>();
+        // Connections to wires
+        public List<int> pinConnections = new List<int>();
+        
+        // Wires inside a component
+        public List<Wire> wires = new List<Wire>();
+        // Components inside a component
         public List<Component> subcomponents = new List<Component>();
 
         public abstract void step();

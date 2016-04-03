@@ -12,26 +12,37 @@ namespace Obgates
         {
             foreach (Component component in subcomponents)
             {
+                // Step each component
                 component.step();
             }
 
+            foreach (Wire wire in wires)
+            {
+                // Set each wire to unpowered
+                wire.state = false;
+            }
+
+            // Set wires to their proper state
             foreach (Component component in subcomponents)
             {
                 // Loop through each output
-                foreach (Output output in component.outputs)
+                for (int i = 0; i < component.pinConnections.Count; i++)
                 {
-                    // Set all connected inputs to the same state
-                    foreach (List<int> entityConnection in output.connections)
+                    // Only set wire if false
+                    if (!wires[component.pinConnections[i]].state)
                     {
-                        foreach (int connection in entityConnection)
-                        {
-                            // First int in connection is the component
-                            if (!subcomponents[entityConnection[0]].inputs[connection]) {
-                                // Only change if false
-                                subcomponents[entityConnection[0]].inputs[connection] = output.state;
-                            }
-                        }
+                        wires[component.pinConnections[i]].state = component.pinStates[i];
                     }
+                }
+            }
+
+            // Set each component connected by wire
+            foreach (Wire wire in wires)
+            {
+                foreach (Connection connection in wire.connections)
+                {
+                    subcomponents[connection.component].pinStates[connection.pin]
+                        = wire.state;
                 }
             }
         }

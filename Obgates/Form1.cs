@@ -21,24 +21,30 @@ namespace Obgates
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // Init gates
             NullGate r1 = new NullGate();
-            Output o1 = new Output();
-            o1.addConnection(1, 0);
-            r1.outputs.Add(o1);
-
             NullGate r2 = new NullGate();
-
             NullGate r3 = new NullGate();
 
+            // Add connection to wire
+            r1.pinConnections.Add(0);
+
+            // Init main component and add stuff
             sim = new Entity();   
             sim.subcomponents.Add(r1);
             sim.subcomponents.Add(r2);
             sim.subcomponents.Add(r3);
+
+            // Add wire
+            Wire w = new Wire();
+            w.connections.Add(new Connection(1, 0));
+            sim.wires.Add(w);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            sim.subcomponents[0].inputs[0] = true;
+            // Set first buffer true for testing
+            sim.subcomponents[0].pinStates[0] = true;
             sim.step();
         }
     }
