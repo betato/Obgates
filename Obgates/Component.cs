@@ -18,6 +18,6 @@ namespace Obgates
         // Components inside a component
         public List<Component> subcomponents = new List<Component>();
 
-        public abstract void step();
+        public abstract void Step();
     }
 }

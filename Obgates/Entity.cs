@@ -8,21 +8,39 @@ namespace Obgates
 {
     class Entity : Component
     {
-        public override void step()
+        public override void Step()
         {
+            // Step each component
             foreach (Component component in subcomponents)
             {
-                // Step each component
-                component.step();
+                component.Step();
             }
 
+            // Set all wires to unpowered
             foreach (Wire wire in wires)
             {
-                // Set each wire to unpowered
                 wire.state = false;
             }
 
-            // Set wires to their proper state
+            // Set all wires from input pins and components
+            SetWires();
+
+            // Set all components connected to wires
+            SetPins();
+        }
+
+        private void SetWires()
+        {
+            // Set wires attached to input pins
+            for (int i = 0; i < pinConnections.Count; i++)
+            {
+                if (!wires[pinConnections[i]].state)
+                {
+                    wires[pinConnections[i]].state = pinStates[i];
+                }
+            }
+
+            // Set wires attached to subcomponents
             foreach (Component component in subcomponents)
             {
                 // Loop through each output
@@ -35,14 +53,26 @@ namespace Obgates
                     }
                 }
             }
+        }
 
-            // Set each component connected by wire
+        private void SetPins()
+        {
+            // Set each component connected to wire
             foreach (Wire wire in wires)
             {
                 foreach (Connection connection in wire.connections)
                 {
-                    subcomponents[connection.component].pinStates[connection.pin]
+                    if (connection.component < 0)
+                    {
+                        // Connected to component pins
+                        pinStates[connection.pin] = wire.state;
+                    }
+                    else
+                    {
+                        // Connected to subcomponent pins
+                        subcomponents[connection.component].pinStates[connection.pin]
                         = wire.state;
+                    }
                 }
             }
         }

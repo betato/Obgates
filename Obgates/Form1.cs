@@ -45,7 +45,7 @@ namespace Obgates
         {
             // Set first buffer true for testing
             sim.subcomponents[0].pinStates[0] = true;
-            sim.step();
+            sim.Step();
         }
     }
 }

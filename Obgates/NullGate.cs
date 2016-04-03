@@ -14,7 +14,7 @@ namespace Obgates
             pinStates.Add(false);
         }
 
-        public override void step()
+        public override void Step()
         {
             pinStates[1] = pinStates[0];
         }
