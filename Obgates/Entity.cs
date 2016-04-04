@@ -76,5 +76,22 @@ namespace Obgates
                 }
             }
         }
+
+        public void AddComponent(Component component)
+        {
+            // Add component
+            subcomponents.Add(component);
+        }
+
+        public void RemoveComponent(int component)
+        {
+            // Remove connections
+            foreach (int pinConnection in subcomponents[component].pinConnections)
+            {
+                wires[pinConnection].RemoveConnection(component);
+            }
+            // Remove component
+            subcomponents.RemoveAt(component);
+        }
     }
 }

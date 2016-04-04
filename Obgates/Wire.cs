@@ -10,5 +10,31 @@ namespace Obgates
     {
         public bool state;
         public List<Connection> connections = new List<Connection>();
+
+        public void RemoveConnection(int component, int pin)
+        {
+            // Remove first connection to pin of component
+            for (int i = connections.Count - 1; i >= 0; i--)
+            {
+                if (connections[i].component == component &&
+                    connections[i].pin == pin)
+                {
+                    connections.RemoveAt(i);
+                    return;
+                }
+            }
+        }
+
+        public void RemoveConnection(int component)
+        {
+            // Remove all connections to component
+            for (int i = connections.Count - 1; i >= 0; i--)
+            {
+                if (connections[i].component == component)
+                {
+                    connections.RemoveAt(i);
+                }
+            }
+        }
     }
 }
