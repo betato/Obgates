@@ -10,14 +10,24 @@ using System.Windows.Forms;
 
 namespace Obgates
 {
-    public partial class Form1 : Form
+    public partial class Form1 : RLoopForm
     {
-        public Form1()
+        public Form1() : base(60, 20)
         {
             InitializeComponent();
         }
 
         Component sim;
+
+        public override void UpdateR()
+        {
+            
+        }
+
+        public override void RenderR()
+        {
+            
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
