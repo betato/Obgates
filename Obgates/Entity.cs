@@ -93,5 +93,35 @@ namespace Obgates
             // Remove component
             subcomponents.RemoveAt(component);
         }
+
+        public void AddWire(Wire wire)
+        {
+            // Add wire
+            wires.Add(wire);
+        }
+
+        public void RemoveWire(int wire)
+        {
+            // Remove wire
+            wires.RemoveAt(wire);
+
+            // Remove connections
+            foreach (Component subcomponent in subcomponents)
+            {
+                for (int i = subcomponent.pinConnections.Count - 1; i >= 0; i--)
+                {
+                    if (subcomponent.pinConnections[i] > wire)
+                    {
+                        // Decrement all connections after the removed wire
+                        subcomponent.pinConnections[i]--;
+                    }
+                    else if (subcomponent.pinConnections[i] == wire)
+                    {
+                        // Remove connection
+                        subcomponent.pinConnections.RemoveAt(i);
+                    }
+                }
+            }
+        }
     }
 }
