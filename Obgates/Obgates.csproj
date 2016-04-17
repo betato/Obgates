@@ -47,6 +47,7 @@
     <Compile Include="AndGate.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="Connection.cs" />
+    <Compile Include="EditorInterface.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

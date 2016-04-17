@@ -17,35 +17,17 @@ namespace Obgates
             InitializeComponent();
         }
 
-        Component sim;
-        RefreshLoop r = new RefreshLoop(60, 20);
+        RefreshLoop refreshLoop = new RefreshLoop(60, 20);
+        EditorInterface editorInterface = new EditorInterface();
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            r.RenderR += r_RenderR;
-            r.UpdateR += r_UpdateR;
+            refreshLoop.RenderR += r_RenderR;
+            refreshLoop.UpdateR += r_UpdateR;
 
-            r.Start();
-
-            // Init gates
-            NullGate r1 = new NullGate();
-            NullGate r2 = new NullGate();
-            NullGate r3 = new NullGate();
-
-            // Add connection to wire
-            r1.pinConnections.Add(0);
-
-            // Init main component and add stuff
-            sim = new Entity();   
-            sim.subcomponents.Add(r1);
-            sim.subcomponents.Add(r2);
-            sim.subcomponents.Add(r3);
-            
-            // Add wire
-            Wire w = new Wire();
-            w.connections.Add(new Connection(1, 0));
-            sim.wires.Add(w);
+            refreshLoop.Start();
         }
+
         void r_UpdateR(object source, int fps, int ups)
         {
             if (this.InvokeRequired)
@@ -56,14 +38,16 @@ namespace Obgates
 
         void r_RenderR(object source, int fps, int ups)
         {
-            
+            if (this.InvokeRequired)
+            {
+                // Render and display current component
+                BackgroundImage = editorInterface.drawComponents(ClientSize);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Set first buffer true for testing
-            sim.subcomponents[0].pinStates[0] = true;
-            sim.Step();
+            editorInterface.stepComponents();
         }
     }
 }
