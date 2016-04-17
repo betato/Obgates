@@ -10,10 +10,13 @@ namespace Obgates
     abstract class Component
     {
         // Output and input states
-        public List<bool> pinStates = new List<bool>();
+        //public List<bool> pinStates = new List<bool>();
         // Connections to wires
-        public List<int> pinConnections = new List<int>();
-        
+        //public List<int> pinConnections = new List<int>();
+
+        // Component inputs and outputs
+        public List<Pin> pins = new List<Pin>();
+
         // Wires inside a component
         public List<Wire> wires = new List<Wire>();
         // Components inside a component

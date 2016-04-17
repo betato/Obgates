@@ -10,14 +10,14 @@ namespace Obgates
     {
         public AndGate()
         {
-            pinStates.Add(false);
-            pinStates.Add(false);
-            pinStates.Add(false);
+            pins.Add(new Pin());
+            pins.Add(new Pin());
+            pins.Add(new Pin());
         }
 
         public override void Step()
         {
-            pinStates[2] = pinStates[1] && pinStates[0];
+            pins[2].state = pins[1].state && pins[0].state;
         }
     }
 }
