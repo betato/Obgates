@@ -16,6 +16,19 @@ namespace Obgates
             this.state = state;
         }
 
+        public Pin(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
+        public Pin(bool state, int x, int y)
+        {
+            this.state = state;
+            this.x = x;
+            this.y = y;
+        }
+
         // Output or input state
         public bool state;
         // Connection to wire

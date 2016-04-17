@@ -10,8 +10,11 @@ namespace Obgates
     {
         public NullGate()
         {
-            pins.Add(new Pin());
-            pins.Add(new Pin());
+            pins.Add(new Pin(0, 1));
+            pins.Add(new Pin(2, 1));
+
+            width = 2;
+            height = 2;
         }
 
         public override void Step()
