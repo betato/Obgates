@@ -11,6 +11,9 @@ namespace Obgates
         public bool state;
         public List<Connection> connections = new List<Connection>();
 
+        // Line visuals for designer
+        public List<Line> segments = new List<Line>();
+
         public void RemoveConnection(int component, int pin)
         {
             // Remove first connection to pin of component
