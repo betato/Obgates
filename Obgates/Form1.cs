@@ -16,76 +16,17 @@ namespace Obgates
         {
             InitializeComponent();
         }
-        
-        private void StartRefreshLoop(int targetFps, int targetUps)
-        {
-            int targetFpsNano = 1000000000 / targetFps;
-            int targetUpsNano = 1000000000 / targetUps;
-            NanoTime tm = new NanoTime();
-
-            long startTime = tm.Time();
-
-            long deltaTime = 0;
-            long deltaFps = 0;
-            long deltaUps = 0;
-            long deltaFpsDisplay = 0;
-            int framecount = 0;
-            int updatecount = 0;
-
-            while (true)
-            {
-                // Get current time
-                long currentTime = tm.Time();
-                // Get time since last loop
-                deltaTime = currentTime - startTime;
-                deltaFps += deltaTime;
-                deltaUps += deltaTime;
-                deltaFpsDisplay += deltaTime;
-                // Set start time of this loop for use in next cycle
-                startTime = currentTime;
-
-                // Render
-                if (deltaFps >= targetFpsNano)
-                {
-                    RenderR();
-                    framecount++;
-                    deltaFps = 0;
-                }
-
-                // Update
-                if (deltaUps >= targetUpsNano)
-                {
-                    UpdateR();
-                    updatecount++;
-                    deltaUps = 0;
-                }
-
-                // Update fps display
-                if (deltaFpsDisplay >= 1000000000)
-                {
-                    Console.WriteLine(String.Format("Fps:{0} Ups:{1}", framecount, updatecount));
-                    framecount = 0;
-                    updatecount = 0;
-                    deltaFpsDisplay = 0;
-                }
-            }
-        }
-
-        private void UpdateR()
-        {
-            // Update components
-        }
-
-        private void RenderR()
-        {
-            // Draw frame
-        }
 
         Component sim;
+        RefreshLoop r = new RefreshLoop(60, 20);
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            StartRefreshLoop(60, 20);
+            r.RenderR += r_RenderR;
+            r.UpdateR += r_UpdateR;
+
+            r.Start();
+
             // Init gates
             NullGate r1 = new NullGate();
             NullGate r2 = new NullGate();
@@ -99,11 +40,23 @@ namespace Obgates
             sim.subcomponents.Add(r1);
             sim.subcomponents.Add(r2);
             sim.subcomponents.Add(r3);
-
+            
             // Add wire
             Wire w = new Wire();
             w.connections.Add(new Connection(1, 0));
             sim.wires.Add(w);
+        }
+        void r_UpdateR(object source, int fps, int ups)
+        {
+            if (this.InvokeRequired)
+            {
+                
+            }
+        }
+
+        void r_RenderR(object source, int fps, int ups)
+        {
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
