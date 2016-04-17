@@ -49,5 +49,10 @@ namespace Obgates
         {
             editorInterface.stepComponents();
         }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            refreshLoop.Exit();
+        }
     }
 }

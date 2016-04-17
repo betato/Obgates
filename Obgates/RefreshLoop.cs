@@ -30,11 +30,19 @@ namespace Obgates
         public delegate void RenderEventHandler(object source, int fps, int ups);
         public delegate void UpdateEventHandler(object source, int fps, int ups);
 
+        bool running = true;
+
         public void Start()
         {
             // Start loop in new thread
             Thread loopThread = new Thread(new ThreadStart(RunLoop));
             loopThread.Start();
+        }
+
+        public void Exit()
+        {
+            // End loop
+            running = false;
         }
 
         public void RunLoop()
@@ -50,7 +58,7 @@ namespace Obgates
             int framecount = 0;
             int updatecount = 0;
 
-            while (true)
+            while (running)
             {
                 // Get current time
                 long currentTime = tm.Time();
