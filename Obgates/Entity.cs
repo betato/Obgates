@@ -32,11 +32,11 @@ namespace Obgates
         private void SetWires()
         {
             // Set wires attached to input pins
-            for (int i = 0; i < pinConnections.Count; i++)
+            for (int i = 0; i < pins.Count; i++)
             {
-                if (!wires[pinConnections[i]].state)
+                if (!wires[pins[i].connection].state)
                 {
-                    wires[pinConnections[i]].state = pinStates[i];
+                    wires[pins[i].connection].state = pins[i].state;
                 }
             }
 
@@ -44,12 +44,12 @@ namespace Obgates
             foreach (Component component in subcomponents)
             {
                 // Loop through each output
-                for (int i = 0; i < component.pinConnections.Count; i++)
+                for (int i = 0; i < component.pins.Count; i++)
                 {
                     // Only set wire if false
-                    if (!wires[component.pinConnections[i]].state)
+                    if (!wires[component.pins[i].connection].state)
                     {
-                        wires[component.pinConnections[i]].state = component.pinStates[i];
+                        wires[component.pins[i].connection].state = component.pins[i].state;
                     }
                 }
             }
@@ -65,12 +65,12 @@ namespace Obgates
                     if (connection.component < 0)
                     {
                         // Connected to component pins
-                        pinStates[connection.pin] = wire.state;
+                        pins[connection.pin].state = wire.state;
                     }
                     else
                     {
                         // Connected to subcomponent pins
-                        subcomponents[connection.component].pinStates[connection.pin]
+                        subcomponents[connection.component].pins[connection.pin].state
                         = wire.state;
                     }
                 }
@@ -86,12 +86,42 @@ namespace Obgates
         public void RemoveComponent(int component)
         {
             // Remove connections
-            foreach (int pinConnection in subcomponents[component].pinConnections)
+            foreach (Pin pin in subcomponents[component].pins)
             {
-                wires[pinConnection].RemoveConnection(component);
+                wires[pin.connection].RemoveConnection(component);
             }
             // Remove component
             subcomponents.RemoveAt(component);
+        }
+
+        public void AddWire(Wire wire)
+        {
+            // Add wire
+            wires.Add(wire);
+        }
+
+        public void RemoveWire(int wire)
+        {
+            // Remove wire
+            wires.RemoveAt(wire);
+
+            // Remove connections
+            foreach (Component subcomponent in subcomponents)
+            {
+                for (int i = subcomponent.pins.Count - 1; i >= 0; i--)
+                {
+                    if (subcomponent.pins[i].connection > wire)
+                    {
+                        // Decrement all connections after the removed wire
+                        subcomponent.pins[i].connection--;
+                    }
+                    else if (subcomponent.pins[i].connection == wire)
+                    {
+                        // Remove connection
+                        subcomponent.pins.RemoveAt(i);
+                    }
+                }
+            }
         }
     }
 }
