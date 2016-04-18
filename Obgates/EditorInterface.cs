@@ -10,13 +10,16 @@ namespace Obgates
     class EditorInterface
     {
         Entity displayComponent = new Entity();
-        int zoom = 10;
-        int displayX = 10;
-        int displayY = 10;
+        public int zoom = 10;
+        public int displayX = 10;
+        public int displayY = 10;
 
         public EditorInterface()
         {
             displayComponent.subcomponents.Add(new NullGate());
+            Wire w = new Wire();
+            w.segments.Add(new Line(1, 1, 3, 3));
+            displayComponent.wires.Add(w);
         }
 
         public Bitmap drawComponents(Size frameSize)
@@ -32,13 +35,13 @@ namespace Obgates
             foreach (Component subcomponent in displayComponent.subcomponents)
             {
                 // Component
-                g.DrawRectangle(Pens.Black, displayX * zoom, displayY * zoom,
+                g.DrawRectangle(Pens.Black, displayX , displayY,
                     subcomponent.width * zoom, subcomponent.height * zoom);
                 // Pins
                 foreach (Pin pin in subcomponent.pins)
                 {
-                    fillCircle(g, Brushes.Black, (displayX + pin.x) * zoom,
-                        (displayY + pin.y) * zoom, 2);
+                    fillCircle(g, Brushes.Black, displayX + pin.x * zoom,
+                        displayY + pin.y * zoom, (int)(0.2 * zoom));
                 }
             }
 
@@ -48,9 +51,9 @@ namespace Obgates
                 // Draw each segment
                 foreach (Line segment in wire.segments)
                 {
-                    g.DrawLine(Pens.Black, segment.x1 + displayX, 
-                        segment.y1 + displayY, segment.x2 + displayX, 
-                        segment.y2 + displayY);
+                    g.DrawLine(Pens.Black, segment.x1 * zoom + displayX, 
+                        segment.y1 * zoom + displayY, segment.x2 * zoom + displayX, 
+                        segment.y2 * zoom + displayY);
                 }
             }
 
