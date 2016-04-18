@@ -25,11 +25,11 @@ namespace Obgates
             point2 = p2;
         }
 
-        int x1;
-        int y1;
+        public int x1;
+        public int y1;
 
-        int x2;
-        int y2;
+        public int x2;
+        public int y2;
 
         public Point point1
         {
