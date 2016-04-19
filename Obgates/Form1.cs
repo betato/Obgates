@@ -31,8 +31,6 @@ namespace Obgates
         }
 
         int scroll = 0;
-        int lastMouseX = 0;
-        int lastMouseY = 0;
 
         void Form1_MouseWheel(object sender, MouseEventArgs e)
         {
@@ -51,20 +49,13 @@ namespace Obgates
         {
             if (this.InvokeRequired)
             {
-                editorInterface.zoom += scroll;
-                scroll = 0;
-                int mouseX = MousePosition.X;
-                int mouseY = MousePosition.Y;
-                if (MouseButtons != 0)
-                {
-                    editorInterface.displayX += mouseX - lastMouseX;
-                    editorInterface.displayY += mouseY - lastMouseY;
-                }
-                lastMouseY = mouseY;
-                lastMouseX = mouseX;
-                
                 // Render and display current component
-                BackgroundImage = editorInterface.drawComponents(ClientSize);
+                editorInterface.updateGraphics(ClientSize.Width, 
+                    ClientSize.Height, scroll, MousePosition.X, MousePosition.Y, 
+                    MouseButtons != 0);
+                scroll = 0;
+
+                BackgroundImage = editorInterface.drawComponents();
             }
         }
 

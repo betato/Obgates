@@ -10,26 +10,55 @@ namespace Obgates
     class EditorInterface
     {
         Entity displayComponent = new Entity();
-        public int zoom = 10;
-        public int displayX = 10;
-        public int displayY = 10;
+        int zoom = 10;
+        int displayX = 10;
+        int displayY = 10;
+        int frameWidth;
+        int frameHeight;
+
+        int lastMouseX = 0;
+        int lastMouseY = 0;
 
         public EditorInterface()
         {
             displayComponent.subcomponents.Add(new NullGate());
             Wire w = new Wire();
-            w.segments.Add(new Line(1, 1, 3, 3));
+            w.segments.Add(new Line(2, 1, 5, 1));
             displayComponent.wires.Add(w);
         }
 
-        public Bitmap drawComponents(Size frameSize)
+        public void updateGraphics(int width, int height, int deltaZoom, 
+            int mouseX, int mouseY, bool mouseDown)
+        {
+            // Set frame size
+            frameWidth = width;
+            frameHeight = height;
+
+            // Get change in mouse position if mouse down
+            if (mouseDown)
+            {
+                displayX += mouseX - lastMouseX;
+                displayY += mouseY - lastMouseY;
+            }
+            lastMouseY = mouseY;
+            lastMouseX = mouseX;
+
+            // Set zoom, do not lower past zero
+            if (zoom + deltaZoom < 0)
+            {
+                deltaZoom = -zoom;
+            }
+            zoom += deltaZoom;
+        }
+
+        public Bitmap drawComponents()
         {
             // Get image and graphics
-            Bitmap image = new Bitmap(frameSize.Width, frameSize.Height);
+            Bitmap image = new Bitmap(frameWidth, frameHeight);
             Graphics g = Graphics.FromImage(image);
 
             // Fill background
-            g.FillRectangle(Brushes.White, 0, 0, frameSize.Width, frameSize.Height);
+            g.FillRectangle(Brushes.White, 0, 0, frameWidth, frameHeight);
 
             // Draw components
             foreach (Component subcomponent in displayComponent.subcomponents)
