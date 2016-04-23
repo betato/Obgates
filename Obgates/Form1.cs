@@ -50,18 +50,23 @@ namespace Obgates
             if (this.InvokeRequired)
             {
                 // Render and display current component
-                editorInterface.updateGraphics(ClientSize.Width, 
-                    ClientSize.Height, scroll, MousePosition.X, MousePosition.Y, 
-                    MouseButtons != 0);
+                editorInterface.updateGraphics(scroll, MousePosition.X, 
+                    MousePosition.Y, MouseButtons != 0, pictureBox1.Width,
+                    pictureBox1.Height);
                 scroll = 0;
 
-                BackgroundImage = editorInterface.drawComponents();
+                pictureBox1.Invalidate();
             }
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             refreshLoop.Exit();
+        }
+
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            editorInterface.drawComponents(e.Graphics);
         }
     }
 }

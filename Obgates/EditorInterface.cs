@@ -13,8 +13,8 @@ namespace Obgates
         int zoom = 10;
         int displayX = 10;
         int displayY = 10;
-        int frameWidth;
-        int frameHeight;
+
+        int frameWidth, frameHeight;
 
         int lastMouseX = 0;
         int lastMouseY = 0;
@@ -27,12 +27,12 @@ namespace Obgates
             displayComponent.wires.Add(w);
         }
 
-        public void updateGraphics(int width, int height, int deltaZoom, 
-            int mouseX, int mouseY, bool mouseDown)
+        public void updateGraphics(int deltaZoom, int mouseX, int mouseY, 
+            bool mouseDown, int width, int height)
         {
             // Set frame size
-            frameWidth = width;
             frameHeight = height;
+            frameWidth = width;
 
             // Get change in mouse position if mouse down
             if (mouseDown)
@@ -51,12 +51,8 @@ namespace Obgates
             zoom += deltaZoom;
         }
 
-        public Bitmap drawComponents()
+        public void drawComponents(Graphics g)
         {
-            // Get image and graphics
-            Bitmap image = new Bitmap(frameWidth, frameHeight);
-            Graphics g = Graphics.FromImage(image);
-
             // Fill background
             g.FillRectangle(Brushes.White, 0, 0, frameWidth, frameHeight);
 
@@ -64,7 +60,7 @@ namespace Obgates
             foreach (Component subcomponent in displayComponent.subcomponents)
             {
                 // Component
-                g.DrawRectangle(Pens.Black, displayX , displayY,
+                g.DrawRectangle(Pens.Black, displayX, displayY,
                     subcomponent.width * zoom, subcomponent.height * zoom);
                 // Pins
                 foreach (Pin pin in subcomponent.pins)
@@ -80,14 +76,11 @@ namespace Obgates
                 // Draw each segment
                 foreach (Line segment in wire.segments)
                 {
-                    g.DrawLine(Pens.Black, segment.x1 * zoom + displayX, 
-                        segment.y1 * zoom + displayY, segment.x2 * zoom + displayX, 
+                    g.DrawLine(Pens.Black, segment.x1 * zoom + displayX,
+                        segment.y1 * zoom + displayY, segment.x2 * zoom + displayX,
                         segment.y2 * zoom + displayY);
                 }
             }
-
-            // Return image
-            return image;
         }
 
         public void fillCircle(Graphics g, Brush b, int x, int y, int radius)
