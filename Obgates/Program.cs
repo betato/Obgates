@@ -14,9 +14,8 @@ namespace Obgates
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            MainWindow mw = new MainWindow(400, 400);
+            mw.Run(20, 60);
         }
     }
 }
