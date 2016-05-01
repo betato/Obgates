@@ -12,18 +12,23 @@ namespace Obgates
 {
     class MainWindow : GameWindow
     {
+        EditorInterface editorInterface = new EditorInterface();
+
         public MainWindow(int height, int width)
             : base(height, width)
         {
-            
+            this.VSync = VSyncMode.On;
         }
-
-        EditorInterface editorInterface = new EditorInterface();
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-        } 
+
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+
+            GL.Ortho(-5, 5, -5, 5, -1, 1);
+        }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
@@ -34,7 +39,11 @@ namespace Obgates
         {
             base.OnRenderFrame(e);
 
+            GL.ClearColor(Color4.White);
             MouseState mouse = OpenTK.Input.Mouse.GetCursorState();
+            editorInterface.drawComponents();
+
+            SwapBuffers();
         }
     }
 }

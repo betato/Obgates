@@ -34,6 +34,7 @@ namespace Obgates
             {
                 pinPoints += subcomponent.pins.Count();
             }
+            pinPoints *= 4;
         }
 
         // Component inputs and outputs
