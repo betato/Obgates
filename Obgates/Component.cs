@@ -4,49 +4,46 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Collections.ObjectModel;
 
 namespace Obgates
 {
     abstract class Component
     {
+        public Component()
+        {
+            wires.CollectionChanged += wires_CollectionChanged;
+            subcomponents.CollectionChanged += subcomponents_CollectionChanged;
+        }
+
+        void wires_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            wirePoints = 0;
+            foreach (Wire wire in wires)
+            {
+                wirePoints += wire.segments.Count();
+            }
+            wirePoints *= 2;
+        }
+
+        void subcomponents_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            pinPoints = 0;
+            componentPoints = subcomponents.Count() * 4;
+            foreach (Component subcomponent in subcomponents)
+            {
+                pinPoints += subcomponent.pins.Count();
+            }
+        }
+
         // Component inputs and outputs
         public List<Pin> pins = new List<Pin>();
 
         // Wires inside a component
-        public List<Wire> Wires
-        {
-            get { return wires; }
-            set
-            {
-                wires = Wires;
-
-                wirePoints = 0;
-                foreach (Wire wire in wires)
-                {
-                    wirePoints += wire.segments.Count();
-                }
-                wirePoints *= 4;
-            }
-        }
-        private List<Wire> wires = new List<Wire>();
+        public ObservableCollection<Wire> wires = new ObservableCollection<Wire>();
 
         // Components inside a component
-        public List<Component> Subcomponents
-        {
-            get { return subcomponents; }
-            set
-            {
-                subcomponents = Subcomponents;
-
-                pinPoints = 0;
-                componentPoints = subcomponents.Count() * 2;
-                foreach (Component subcomponent in subcomponents)
-                {
-                    pinPoints += subcomponent.pins.Count();
-                }
-            }
-        }
-        private List<Component> subcomponents = new List<Component>();
+        public ObservableCollection<Component> subcomponents = new ObservableCollection<Component>();
 
         // Points needed for rendering
         public int wirePoints;
