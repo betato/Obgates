@@ -11,13 +11,13 @@ namespace Obgates
         public override void Step()
         {
             // Step each component
-            foreach (Component component in subcomponents)
+            foreach (Component component in Subcomponents)
             {
                 component.Step();
             }
 
             // Set all wires to unpowered
-            foreach (Wire wire in wires)
+            foreach (Wire wire in Wires)
             {
                 wire.state = false;
             }
@@ -34,22 +34,22 @@ namespace Obgates
             // Set wires attached to input pins
             for (int i = 0; i < pins.Count; i++)
             {
-                if (!wires[pins[i].connection].state)
+                if (!Wires[pins[i].connection].state)
                 {
-                    wires[pins[i].connection].state = pins[i].state;
+                    Wires[pins[i].connection].state = pins[i].state;
                 }
             }
 
             // Set wires attached to subcomponents
-            foreach (Component component in subcomponents)
+            foreach (Component component in Subcomponents)
             {
                 // Loop through each output
                 for (int i = 0; i < component.pins.Count; i++)
                 {
                     // Only set wire if false
-                    if (!wires[component.pins[i].connection].state)
+                    if (!Wires[component.pins[i].connection].state)
                     {
-                        wires[component.pins[i].connection].state = component.pins[i].state;
+                        Wires[component.pins[i].connection].state = component.pins[i].state;
                     }
                 }
             }
@@ -58,7 +58,7 @@ namespace Obgates
         private void SetPins()
         {
             // Set each component connected to wire
-            foreach (Wire wire in wires)
+            foreach (Wire wire in Wires)
             {
                 foreach (Connection connection in wire.connections)
                 {
@@ -70,7 +70,7 @@ namespace Obgates
                     else
                     {
                         // Connected to subcomponent pins
-                        subcomponents[connection.component].pins[connection.pin].state
+                        Subcomponents[connection.component].pins[connection.pin].state
                         = wire.state;
                     }
                 }
@@ -80,33 +80,33 @@ namespace Obgates
         public void AddComponent(Component component)
         {
             // Add component
-            subcomponents.Add(component);
+            Subcomponents.Add(component);
         }
 
         public void RemoveComponent(int component)
         {
             // Remove connections
-            foreach (Pin pin in subcomponents[component].pins)
+            foreach (Pin pin in Subcomponents[component].pins)
             {
-                wires[pin.connection].RemoveConnection(component);
+                Wires[pin.connection].RemoveConnection(component);
             }
             // Remove component
-            subcomponents.RemoveAt(component);
+            Subcomponents.RemoveAt(component);
         }
 
         public void AddWire(Wire wire)
         {
             // Add wire
-            wires.Add(wire);
+            Wires.Add(wire);
         }
 
         public void RemoveWire(int wire)
         {
             // Remove wire
-            wires.RemoveAt(wire);
+            Wires.RemoveAt(wire);
 
             // Remove connections
-            foreach (Component subcomponent in subcomponents)
+            foreach (Component subcomponent in Subcomponents)
             {
                 for (int i = subcomponent.pins.Count - 1; i >= 0; i--)
                 {

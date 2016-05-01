@@ -13,9 +13,45 @@ namespace Obgates
         public List<Pin> pins = new List<Pin>();
 
         // Wires inside a component
-        public List<Wire> wires = new List<Wire>();
+        public List<Wire> Wires
+        {
+            get { return wires; }
+            set
+            {
+                wires = Wires;
+
+                wirePoints = 0;
+                foreach (Wire wire in wires)
+                {
+                    wirePoints += wire.segments.Count();
+                }
+                wirePoints *= 4;
+            }
+        }
+        private List<Wire> wires = new List<Wire>();
+
         // Components inside a component
-        public List<Component> subcomponents = new List<Component>();
+        public List<Component> Subcomponents
+        {
+            get { return subcomponents; }
+            set
+            {
+                subcomponents = Subcomponents;
+
+                pinPoints = 0;
+                componentPoints = subcomponents.Count() * 2;
+                foreach (Component subcomponent in subcomponents)
+                {
+                    pinPoints += subcomponent.pins.Count();
+                }
+            }
+        }
+        private List<Component> subcomponents = new List<Component>();
+
+        // Points needed for rendering
+        public int wirePoints;
+        public int componentPoints;
+        public int pinPoints;
 
         public int x;
         public int y;
