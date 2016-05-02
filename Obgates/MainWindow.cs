@@ -26,8 +26,24 @@ namespace Obgates
 
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
-
             GL.Ortho(-5, 5, -5, 5, -1, 1);
+        }
+
+        double left = -10.0, right = 10.0, bottom = -10.0, top = 10.0;
+
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
+        {
+            base.OnMouseWheel(e);
+            
+            double zoom = e.DeltaPrecise;
+
+            double x = (double) e.X / (double) Width;
+            double y = (double) e.Y / (double) Height;
+
+            left += x * zoom;
+            right -= (1 - x) * zoom;
+            bottom += (1 - y) * zoom;
+            top -= y * zoom;
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -39,8 +55,10 @@ namespace Obgates
         {
             base.OnRenderFrame(e);
 
-            GL.ClearColor(Color4.White);
-            MouseState mouse = OpenTK.Input.Mouse.GetCursorState();
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+            GL.LoadIdentity();
+            GL.Ortho(left, right, bottom, top, -1, 1);
             editorInterface.drawComponents();
 
             SwapBuffers();
