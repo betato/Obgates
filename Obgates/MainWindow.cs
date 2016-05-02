@@ -35,7 +35,7 @@ namespace Obgates
         {
             base.OnMouseWheel(e);
             
-            double zoom = e.DeltaPrecise;
+            float zoom = e.DeltaPrecise;
 
             double x = (double) e.X / (double) Width;
             double y = (double) e.Y / (double) Height;
@@ -44,6 +44,26 @@ namespace Obgates
             right -= (1 - x) * zoom;
             bottom += (1 - y) * zoom;
             top -= y * zoom;
+        }
+
+
+        protected override void OnMouseMove(MouseMoveEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            if (e.Mouse.MiddleButton == ButtonState.Pressed)
+            {
+                double x = (double)e.XDelta / (double)Width;
+                double y = (double)e.YDelta / (double)Height;
+
+                double width = right - left;
+                double height = top - bottom;
+
+                left += -x * width;
+                right += -x * width;
+                bottom += y * height;
+                top += y * height;
+            }
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
