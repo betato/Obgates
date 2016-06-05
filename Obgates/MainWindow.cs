@@ -23,10 +23,6 @@ namespace Obgates
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadIdentity();
-            GL.Ortho(-5, 5, -5, 5, -1, 1);
         }
 
         double left = -10.0, right = 10.0, bottom = -10.0, top = 10.0;
@@ -46,7 +42,6 @@ namespace Obgates
             top -= y * zoom;
         }
 
-
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
             base.OnMouseMove(e);
@@ -64,6 +59,32 @@ namespace Obgates
                 bottom += y * height;
                 top += y * height;
             }
+        }
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseDown(e);
+
+            double x = e.X;
+            double y = e.Y;
+
+            PointToScreen(ref x, ref y);
+            Console.WriteLine(x + "," + y);
+        }
+
+        private void PointToScreen(ref double x, ref double y)
+        {
+            // Get absolute cursor position
+            x = x / ((double)Width);
+            y = 1 - (y / ((double)Height));
+
+            // Get scaled cursor position
+            x = (right - left) * x;
+            y = (top - bottom) * y;
+
+            // Get relative cursor position
+            x = left + x;
+            y = bottom + y;
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
