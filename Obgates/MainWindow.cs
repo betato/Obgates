@@ -86,6 +86,51 @@ namespace Obgates
             x = left + x;
             y = bottom + y;
         }
+        
+        private void DrawGrid()
+        {
+            // Init
+            int step = 4;
+            int bottomLineStart = round((int)bottom, step) - step;
+            int leftLineStart = round((int)this.left, step) - step;
+            int topLineStart = (int)(top + 1);
+            int rightLineStart = (int)(right + 1);
+
+            int horizontalLines = topLineStart - bottomLineStart;
+            int verticalLines = rightLineStart - leftLineStart;
+            int horizontalLinesX2 = horizontalLines * 2;
+            int verticalLinesX2 = verticalLines * 2;
+
+            Vector2[] gridVertexBuffer = new Vector2[horizontalLinesX2 + verticalLinesX2];
+            int VBO = GL.GenBuffer();
+
+            // Create grid
+            for (int i = 0; i < horizontalLines; i += step)
+            {
+                gridVertexBuffer[i * 2] = new Vector2(leftLineStart, bottomLineStart + i);
+                gridVertexBuffer[i * 2 + 1] = new Vector2(rightLineStart, bottomLineStart + i);
+            }
+
+            for (int i = 0; i < verticalLines; i += step)
+            {
+                gridVertexBuffer[(horizontalLinesX2) + i * 2] = new Vector2(leftLineStart + i, topLineStart);
+                gridVertexBuffer[(horizontalLinesX2) + i * 2 + 1] = new Vector2(leftLineStart + i, bottomLineStart);
+            }
+
+            // Draw buffer
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
+            GL.BufferData<Vector2>(BufferTarget.ArrayBuffer,
+                (IntPtr)(Vector2.SizeInBytes * gridVertexBuffer.Length),
+                gridVertexBuffer, BufferUsageHint.StaticDraw);
+            GL.EnableClientState(ArrayCap.VertexArray);
+            GL.VertexPointer(2, VertexPointerType.Float, Vector2.SizeInBytes, 0);
+            GL.DrawArrays(PrimitiveType.Lines, 0, gridVertexBuffer.Length);
+        }
+
+        private int round(int value, int factor)
+        {
+            return (int)Math.Round((value / (double)factor), MidpointRounding.AwayFromZero) * factor;
+        }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
@@ -101,6 +146,7 @@ namespace Obgates
             GL.LoadIdentity();
             GL.Ortho(left, right, bottom, top, -1, 1);
             editorInterface.drawComponents();
+            DrawGrid();
 
             SwapBuffers();
         }
