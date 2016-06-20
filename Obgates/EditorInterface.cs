@@ -31,6 +31,32 @@ namespace Obgates
         Vector2[] pinVertexBuffer;
         int[] VBOs = new int[3];
 
+        public void selectComponent(double x, double y)
+        {
+            // Loop through subcomponents
+            foreach (Component component in displayComponent.subcomponents)
+            {
+                if (rectContains(component.x, component.y, component.width, component.height, x, y)) {
+                    // Select the component
+                    component.selected = true;
+                    return;
+                }
+            }
+            // Otherwise deselect all components
+            foreach (Component component in displayComponent.subcomponents)
+            {
+                component.selected = false;
+            }
+        }
+
+        public bool rectContains(int rx, int ry, int rWidth, int rHeight, double px, double py)
+        {
+            return (rx < px &&
+                    ry < py &&
+                    rx + rWidth > px &&
+                    ry + rHeight > py);
+        }
+
         public void drawComponents()
         {
             // Create buffer arrays

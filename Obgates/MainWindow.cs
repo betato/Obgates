@@ -70,6 +70,7 @@ namespace Obgates
 
             PointToScreen(ref x, ref y);
             Console.WriteLine(x + "," + y);
+            editorInterface.selectComponent(x, y);
         }
 
         private void PointToScreen(ref double x, ref double y)

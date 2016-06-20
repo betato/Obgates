@@ -36,6 +36,8 @@ namespace Obgates
             }
             pinPoints *= 4;
         }
+        // If component is selected
+        public bool selected;
 
         // Component inputs and outputs
         public List<Pin> pins = new List<Pin>();
